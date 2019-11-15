@@ -1,0 +1,35 @@
+{
+  "name": "graphanalyzer",
+  "version": "1.0.0",
+  "description": "Graph Analyzer",
+  "main": "src/index.html",
+  "dependencies": {
+    "cytoscape": "^3.12.0"
+  },
+  "devDependencies": {
+    "@types/cytoscape": "3.1.8",
+    "parcel": "1.12.4",
+    "typescript": "^3.7.2"
+  },
+  "scripts": {
+    "start": "parcel src/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wajeehmisbahkhan/GraphAnalyzer.git"
+  },
+  "keywords": [
+    "graph",
+    "analyzer",
+    "prims",
+    "kruskal",
+    "djikstra"
+  ],
+  "author": "Muhammad Bilal Akmal, Wajeeh Misbah Khan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wajeehmisbahkhan/GraphAnalyzer/issues"
+  },
+  "homepage": "https://github.com/wajeehmisbahkhan/GraphAnalyzer#readme"
+}
