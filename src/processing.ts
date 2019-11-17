@@ -28,7 +28,7 @@ export const cy = cytoscape({
 });
 
 // Needed globally for algorithms such as dijkstra
-let startNode: cytoscape.Collection;
+let startNode: cytoscape.Singular;
 
 export function process(input: string) {
   // Remove netsim
@@ -59,7 +59,7 @@ export function process(input: string) {
 
 // Algorithm Computations
 export function computeKruskal() {
-  cy.elements().kruskal(edge => edge.data('weight'));
+  cy.elements().kruskal(edge => edge[0].data('weight'));
 }
 
 export function computeDijkstra() {
@@ -68,7 +68,7 @@ export function computeDijkstra() {
     .dijkstra({
       root: startNode,
       weight: edge => {
-        return edge.data('weight');
+        return edge[0].data('weight');
       }
     })
     .distanceTo(cy.getElementById('3'));
@@ -81,7 +81,7 @@ export function computeBellmanFord() {
     .bellmanFord({
       root: startNode,
       weight: edge => {
-        return edge.data('weight');
+        return edge[0].data('weight');
       },
       directed: false
     })
@@ -91,9 +91,8 @@ export function computeBellmanFord() {
 
 export function computeFloydWarshall() {
   const answer = cy.elements().floydWarshall({
-    root: startNode,
     weight: edge => {
-      return edge.data('weight');
+      return edge[0].data('weight');
     },
     directed: false
   });

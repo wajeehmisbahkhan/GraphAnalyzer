@@ -33,16 +33,26 @@ function addEdge(
       group: 'edges',
       data: {
         id,
+        weight,
         source: sourceId,
         target: targetId
       }
+      // style: [
+      //   {
+      //     selector: 'edge[name]'
+      //     // style: {
+      //     // label: 'data(weight)'
+      //     // width: 'mapData(weight, 30, 80, 20, 50)'
+      //     // }
+      //   }
+      // ]
     });
-    edge.data('weight', weight);
+    edge.style('label', edge.data('weight'));
   }
 }
 
 function getEdge(id: string) {
-  return cy.getElementById(id);
+  return cy.getElementById(id) as cytoscape.EdgeSingular;
 }
 
 // Input related
