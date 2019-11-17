@@ -87,7 +87,7 @@ export function computeEdge(input: string) {
     // Fuzool right number
     input = removeFloatFromString(input);
     // Push to edges
-    addEdge(`${nodeId}-${edgeId}`, nodeId, edgeId, weight);
+    addEdge(`${nodeId}-${edgeId}`, nodeId, edgeId, weight / 10000000);
   }
 }
 
