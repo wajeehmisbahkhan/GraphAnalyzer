@@ -55,8 +55,8 @@ class Coordinates {
 
 class Node {
   coordinates: Coordinates;
-  // Each edge leads to another node and has a weight and id (index)
-  edges: Array<[Node, number, number]>;
+  // Each edge leads to another node using id (index) and has weight
+  edges: Array<[number, number]>;
 
   constructor(coordinates: Coordinates) {
     this.coordinates = coordinates;
@@ -64,8 +64,27 @@ class Node {
   }
 
   addEdge(index: number, weight: number) {
-    const referencedNode = nodes[index];
-    this.edges.push([referencedNode, weight, index]);
+    // If an edge already leads to the node
+    let edge = this.getEdge(index);
+    if (edge) {
+      // Replace only if weight of new is lesser
+      if (edge[1] > weight) {
+        edge = [index, weight];
+      }
+    } else {
+      this.edges.push([index, weight]);
+    }
+  }
+
+  getEdge(id: number) {
+    for (let i = 0; i < this.edges.length; i++) {
+      const edge = this.edges[i];
+      // Check id
+      if (edge[0] === id) {
+        return edge;
+      }
+    }
+    return null;
   }
 }
 
@@ -135,9 +154,7 @@ let takeInputs = (input: string) => {
   nodes.forEach(node => {
     for (let i = 0; i < node.edges.length - 1; i++) {
       let match = false;
-      node.edges.slice(i + 1).forEach(edge => {
-        edge[2];
-      });
+      node.edges.slice(i + 1).forEach(edge => {});
     }
   });
 };
@@ -173,16 +190,15 @@ const showGraph = () => {
   });
   // Edges
   nodes.forEach((node, i) => {
-    console.log(node, node.edges);
-    // node.edges.forEach((edge, j) => {
-    //   cy.add({
-    //     group: 'edges',
-    //     data: {
-    //       id: `${i}-${j}`,
-    //       source: `${i}`,
-    //       target: `${j}`
-    //     }
-    //   });
-    // });
+    node.edges.forEach(edge => {
+      cy.add({
+        group: 'edges',
+        data: {
+          id: `${i}-${edge[0]}`,
+          source: `${i}`,
+          target: `${edge[0]}`
+        }
+      });
+    });
   });
 };
