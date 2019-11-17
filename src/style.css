@@ -1,5 +1,22 @@
+body {
+  margin: 0;
+}
+
 #cy {
-  width: 300px;
-  height: 300px;
+  width: 100vw;
+  height: 85vh;
   display: block;
+  /*
+    Background
+  */
+  background: linear-gradient(135deg, #eceddc 25%, transparent 25%) -50px 0,
+    linear-gradient(225deg, #eceddc 25%, transparent 25%) -50px 0,
+    linear-gradient(315deg, #eceddc 25%, transparent 25%),
+    linear-gradient(45deg, #eceddc 25%, transparent 25%);
+  background-size: 100px 100px;
+}
+
+div#input-container {
+  padding: 5vh 0;
+  text-align: center;
 }
