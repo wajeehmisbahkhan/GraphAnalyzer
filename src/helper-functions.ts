@@ -37,17 +37,10 @@ function addEdge(
         source: sourceId,
         target: targetId
       }
-      // style: [
-      //   {
-      //     selector: 'edge[name]'
-      //     // style: {
-      //     // label: 'data(weight)'
-      //     // width: 'mapData(weight, 30, 80, 20, 50)'
-      //     // }
-      //   }
-      // ]
     });
+    // TODO: Remove label
     edge.style('label', edge.data('weight'));
+    edge.style('width', edge.data('weight'));
   }
 }
 
