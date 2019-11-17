@@ -58,7 +58,9 @@ export function process(input: string) {
 }
 
 // Algorithm Computations
-export function computeKruskal() {}
+export function computeKruskal() {
+  cy.elements().kruskal(edge => edge.data('weight'));
+}
 
 export function computeDijkstra() {
   const answer = cy
@@ -67,9 +69,33 @@ export function computeDijkstra() {
       root: startNode,
       weight: edge => {
         return edge.data('weight');
-      },
-      directed: true
+      }
     })
     .distanceTo(cy.getElementById('3'));
+  console.log(answer);
+}
+
+export function computeBellmanFord() {
+  const answer = cy
+    .elements()
+    .bellmanFord({
+      root: startNode,
+      weight: edge => {
+        return edge.data('weight');
+      },
+      directed: false
+    })
+    .distanceTo(cy.getElementById('3'));
+  console.log(answer);
+}
+
+export function computeFloydWarshall() {
+  const answer = cy.elements().floydWarshall({
+    root: startNode,
+    weight: edge => {
+      return edge.data('weight');
+    },
+    directed: false
+  });
   console.log(answer);
 }

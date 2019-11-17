@@ -1,4 +1,10 @@
-import { process, computeKruskal, computeDijkstra } from './processing';
+import {
+  process,
+  computeKruskal,
+  computeDijkstra,
+  computeBellmanFord,
+  computeFloydWarshall
+} from './processing';
 
 const algorithms = ['kruskal', 'dijkstra', 'bellmanFord', 'floydWarshall'];
 
@@ -34,5 +40,9 @@ function handleButtonClick(e: MouseEvent) {
     computeKruskal();
   } else if (id === 'dijkstra') {
     computeDijkstra();
+  } else if (id === 'bellmanFord') {
+    computeBellmanFord();
+  } else if (id === 'floydWarshall') {
+    computeFloydWarshall();
   }
 }
