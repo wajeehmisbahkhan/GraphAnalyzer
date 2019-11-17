@@ -59,42 +59,58 @@ export function process(input: string) {
 
 // Algorithm Computations
 export function computeKruskal() {
-  cy.elements().kruskal(edge => edge[0].data('weight'));
+  console.log(cy.elements().kruskal(edge => edge[0].data('weight')));
 }
 
 export function computeDijkstra() {
-  const answer = cy
-    .elements()
-    .dijkstra({
-      root: startNode,
-      weight: edge => {
-        return edge[0].data('weight');
-      }
-    })
-    .distanceTo(cy.getElementById('3'));
-  console.log(answer);
+  cy.nodes().forEach(destinationNode => {
+    if (startNode.id() !== destinationNode.id()) {
+      const distance = cy
+        .elements()
+        .dijkstra({
+          root: startNode,
+          weight: edge => {
+            return edge[0].data('weight');
+          },
+          directed: false
+        })
+        .distanceTo(destinationNode);
+      console.log(`${startNode.id()}-${destinationNode.id()}: ${distance}`);
+    }
+  });
 }
 
 export function computeBellmanFord() {
-  const answer = cy
-    .elements()
-    .bellmanFord({
-      root: startNode,
-      weight: edge => {
-        return edge[0].data('weight');
-      },
-      directed: false
-    })
-    .distanceTo(cy.getElementById('3'));
-  console.log(answer);
+  cy.nodes().forEach(destinationNode => {
+    if (startNode.id() !== destinationNode.id()) {
+      const distance = cy
+        .elements()
+        .bellmanFord({
+          root: startNode,
+          weight: edge => {
+            return edge[0].data('weight');
+          },
+          directed: false
+        })
+        .distanceTo(destinationNode);
+      console.log(`${startNode.id()}-${destinationNode.id()}: ${distance}`);
+    }
+  });
 }
 
 export function computeFloydWarshall() {
-  const answer = cy.elements().floydWarshall({
+  const result = cy.elements().floydWarshall({
     weight: edge => {
       return edge[0].data('weight');
     },
     directed: false
   });
-  console.log(answer);
+  cy.nodes().forEach(destinationNode => {
+    if (startNode.id() !== destinationNode.id()) {
+      console.log(`Shortest path: ${result.path(startNode, destinationNode)}`);
+      console.log(
+        `Shortest distance: ${result.distance(startNode, destinationNode)}`
+      );
+    }
+  });
 }
