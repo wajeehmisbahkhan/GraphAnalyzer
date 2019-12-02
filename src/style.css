@@ -2,9 +2,7 @@ body {
   margin: 0;
 }
 
-#cy {
-  width: 100vw;
-  height: 85vh;
+.cy {
   display: block;
   /*
     Background
@@ -16,7 +14,24 @@ body {
   background-size: 100px 100px;
 }
 
+#cy {
+  width: 100vw;
+  height: 85vh;
+}
+
+.modal-cy {
+  width: inherit;
+  height: 75vh;
+}
+
 div#input-container {
-  padding: 5vh 0;
-  text-align: center;
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  height: 15vh;
+}
+
+div#input-container > * {
+  margin: 0 auto;
 }

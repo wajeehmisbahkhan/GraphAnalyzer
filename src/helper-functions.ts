@@ -1,27 +1,57 @@
-import { cy } from './processing';
+import cytoscape from 'cytoscape';
+import { mainCy } from './processing';
 
 // Cytoscape related
-function addNode(id: string, x: number, y: number) {
+export function generateCytoscape(element: HTMLElement) {
+  return cytoscape({
+    container: element, // container to render in
+
+    style: [
+      // the stylesheet for the graph
+      {
+        selector: 'node',
+        style: {
+          'background-color': '#666',
+          content: 'data(id)'
+        }
+      },
+
+      {
+        selector: 'edge',
+        style: {
+          width: 3,
+          'line-color': '#ccc',
+          'target-arrow-color': '#ccc',
+          'target-arrow-shape': 'triangle'
+        }
+      }
+    ]
+  });
+}
+
+export function addNode(
+  cy: cytoscape.Core,
+  id: string,
+  position?: { x: number; y: number }
+) {
   cy.add({
     group: 'nodes',
     data: {
       id
     },
-    position: {
-      x: x * 1000, // For scaling well
-      y: y * 1000
-    }
+    position
   });
 }
 
-function addEdge(
+export function addEdge(
+  cy: cytoscape.Core,
   id: string,
   sourceId: string,
   targetId: string,
   weight: number
 ) {
   // If already an edge exists like this
-  const edge = getEdge(id);
+  const edge = cy.getElementById(id) as cytoscape.EdgeSingular;
   if (edge.isEdge()) {
     // Replace if weight is lower
     if (edge.data('weight') > weight) {
@@ -38,14 +68,8 @@ function addEdge(
         target: targetId
       }
     });
-    // TODO: Remove label
-    edge.style('label', edge.data('weight'));
     edge.style('width', edge.data('weight'));
   }
-}
-
-function getEdge(id: string) {
-  return cy.getElementById(id) as cytoscape.EdgeSingular;
 }
 
 // Input related
@@ -59,8 +83,12 @@ export function computeNode(input: string) {
   // y
   const y = parseFloat(input);
   input = input.replace(y.toString(), '').trim();
+  // Scaling
+  const nodesCount = mainCy.nodes().length;
+  const scale = 1000 + (nodesCount - 10) * nodesCount;
+  // nodesCount >= 10 && nodesCount < 40 ? 1000 : nodesCount < 70 ? 1500 : 2000;
   // Add Node
-  addNode(id, x, y);
+  addNode(mainCy, id, { x: x * scale, y: y * scale });
 }
 
 export function computeEdge(input: string) {
@@ -80,7 +108,7 @@ export function computeEdge(input: string) {
     // Fuzool right number
     input = removeFloatFromString(input);
     // Push to edges
-    addEdge(`${nodeId}-${edgeId}`, nodeId, edgeId, weight / 10000000);
+    addEdge(mainCy, `${nodeId}-${edgeId}`, nodeId, edgeId, weight / 10000000);
   }
 }
 

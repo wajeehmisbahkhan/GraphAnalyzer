@@ -1,34 +1,14 @@
-import cytoscape from 'cytoscape';
-import { computeNode, computeEdge } from './helper-functions';
+import {
+  computeNode,
+  computeEdge,
+  generateCytoscape
+} from './helper-functions';
 
 // Init cy
-export const cy = cytoscape({
-  container: document.getElementById('cy'), // container to render in
-
-  style: [
-    // the stylesheet for the graph
-    {
-      selector: 'node',
-      style: {
-        'background-color': '#666',
-        label: 'data(id)'
-      }
-    },
-
-    {
-      selector: 'edge',
-      style: {
-        width: 3,
-        'line-color': '#ccc',
-        'target-arrow-color': '#ccc',
-        'target-arrow-shape': 'triangle'
-      }
-    }
-  ]
-});
+export const mainCy = generateCytoscape(document.getElementById('cy'));
 
 // Needed globally for algorithms such as dijkstra
-let startNode: cytoscape.Singular;
+export let startNode: cytoscape.NodeSingular;
 
 export function process(input: string) {
   // Remove netsim
@@ -52,20 +32,29 @@ export function process(input: string) {
     } else {
       // Start from here
       const startNodeId = parseInt(numbers).toString();
-      startNode = cy.getElementById(startNodeId);
+      startNode = mainCy.getElementById(startNodeId);
     }
   });
 }
 
 // Algorithm Computations
 export function computeKruskal() {
-  console.log(cy.elements().kruskal(edge => edge[0].data('weight')));
+  let then = new Date();
+  mainCy.elements().kruskal(edge => edge[0].data('weight'));
+  let now = new Date();
+  console.log(now - then);
+  return mainCy.elements().kruskal(edge => edge[0].data('weight'));
 }
 
 export function computeDijkstra() {
-  cy.nodes().forEach(destinationNode => {
+  const distances: Array<{
+    destinationNodeId: string;
+    distance: number;
+  }> = [];
+  let then = new Date();
+  mainCy.nodes().forEach(destinationNode => {
     if (startNode.id() !== destinationNode.id()) {
-      const distance = cy
+      const distance = mainCy
         .elements()
         .dijkstra({
           root: startNode,
@@ -75,15 +64,29 @@ export function computeDijkstra() {
           directed: false
         })
         .distanceTo(destinationNode);
-      console.log(`${startNode.id()}-${destinationNode.id()}: ${distance}`);
+      distances.push({
+        destinationNodeId: destinationNode.id(),
+        distance
+      });
     }
   });
+  let now = new Date();
+  console.log(now - then);
+  return {
+    startNodeId: startNode.id(),
+    distances
+  };
 }
 
 export function computeBellmanFord() {
-  cy.nodes().forEach(destinationNode => {
+  const distances: Array<{
+    destinationNodeId: string;
+    distance: number;
+  }> = [];
+  let then = new Date();
+  mainCy.nodes().forEach(destinationNode => {
     if (startNode.id() !== destinationNode.id()) {
-      const distance = cy
+      const distance = mainCy
         .elements()
         .bellmanFord({
           root: startNode,
@@ -93,24 +96,35 @@ export function computeBellmanFord() {
           directed: false
         })
         .distanceTo(destinationNode);
-      console.log(`${startNode.id()}-${destinationNode.id()}: ${distance}`);
+      distances.push({
+        destinationNodeId: destinationNode.id(),
+        distance
+      });
     }
   });
+  let now = new Date();
+  console.log(now - then);
+  return {
+    startNodeId: startNode.id(),
+    distances
+  };
 }
 
 export function computeFloydWarshall() {
-  const result = cy.elements().floydWarshall({
+  let then = new Date();
+  const result = mainCy.elements().floydWarshall({
     weight: edge => {
       return edge[0].data('weight');
     },
     directed: false
   });
-  cy.nodes().forEach(destinationNode => {
-    if (startNode.id() !== destinationNode.id()) {
-      console.log(`Shortest path: ${result.path(startNode, destinationNode)}`);
-      console.log(
-        `Shortest distance: ${result.distance(startNode, destinationNode)}`
-      );
-    }
+  let now = new Date();
+  console.log(now - then);
+  return result;
+}
+
+export function computeClusteringCoefficient() {
+  return mainCy.elements().closenessCentrality({
+    root: startNode
   });
 }

@@ -6,16 +6,100 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Graph Visualizer</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="../node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/bootstrap/js/src/modal.js"></script>
   </head>
   <body>
-    <div id="cy"></div>
+    <div id="cy" class="cy"></div>
     <div id="input-container">
-      <input type="file" name="text" id="input" accept=".txt" /><br />
-      <button id="kruskal">Kruskal</button>
-      <button id="dijkstra">Dijkstra</button>
-      <button id="bellmanFord">Bellman Ford</button>
-      <button id="floydWarshall">Floyd Warshall</button>
+      <input
+        class="btn btn-primary"
+        type="file"
+        name="text"
+        id="input"
+        accept=".txt"
+      /><br />
+      <button
+        class="btn btn-success"
+        id="prims"
+        data-toggle="modal"
+        data-target="#outputModal"
+      >
+        Prims
+      </button>
+      <button
+        class="btn btn-success"
+        id="kruskal"
+        data-toggle="modal"
+        data-target="#outputModal"
+      >
+        Kruskal
+      </button>
+      <button
+        class="btn btn-success"
+        id="dijkstra"
+        data-toggle="modal"
+        data-target="#outputModal"
+      >
+        Dijkstra
+      </button>
+      <button
+        class="btn btn-success"
+        id="bellmanFord"
+        data-toggle="modal"
+        data-target="#outputModal"
+      >
+        Bellman Ford
+      </button>
+      <button
+        class="btn btn-success"
+        id="floydWarshall"
+        data-toggle="modal"
+        data-target="#outputModal"
+      >
+        Floyd Warshall
+      </button>
+      <button
+        class="btn btn-success"
+        id="clusteringCoefficient"
+        data-toggle="modal"
+        data-target="#outputModal"
+      >
+        Clustering Coefficient
+      </button>
     </div>
-    <script src="user-input.ts"></script>
+    <!-- Output Modal -->
+    <div
+      class="modal fade"
+      id="outputModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="outputModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="outputModalLabel">No Output</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Please input a valid file.
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="input-output.ts"></script>
   </body>
 </html>
